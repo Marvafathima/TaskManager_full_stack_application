@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+
 import './App.css';
 import AuthForm from './components/AuthForm';
 import TaskManager from './components/TaskManager';

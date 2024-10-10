@@ -16,3 +16,4 @@ class UserSerializer(serializers.DocumentSerializer):
         user.password = make_password(password)  # Import make_password from django.contrib.auth.hashers
         user.save()
         return user
+    
