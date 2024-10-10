@@ -10,10 +10,10 @@ class UserSerializer(serializers.DocumentSerializer):
         }
     
     def create(self, validated_data):
-        # Hash the password before saving
+       
         password = validated_data.pop('password')
         user = User(**validated_data)
-        user.password = make_password(password)  # Import make_password from django.contrib.auth.hashers
+        user.password = make_password(password)  
         user.save()
         return user
     

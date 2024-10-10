@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000/'; // Adjust this to your backend URL
+const API_URL = 'http://127.0.0.1:8000/'; 
 
-// Async thunk for user signup
 axios.interceptors.request.use(
     config => {
       const token = localStorage.getItem('token');

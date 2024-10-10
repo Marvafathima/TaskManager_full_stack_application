@@ -59,29 +59,6 @@ const AuthForm = () => {
       }
     }
   };
-  // const handleSubmit = async (formData) => {
-  //   if (isSignUp) {
-  //     if (formData.password !== formData.confirmPassword) {
-  //       toast.error("Passwords don't match!");
-  //       return;
-  //     }
-  //     const result = await dispatch(signUp(formData));
-  //     if (signUp.fulfilled.match(result)) {
-  //       toast.success('Signed up successfully!');
-  //       navigate('/home');
-  //     } else if (signUp.rejected.match(result)) {
-  //       toast.error(result.payload?.error || 'Sign up failed');
-  //     }
-  //   } else {
-  //     const signinResult = await dispatch(signIn(formData));
-  //     if (signIn.fulfilled.match(signinResult)) {
-  //       toast.success('Logged in successfully!');
-  //       navigate('/home');
-  //     } else if (signIn.rejected.match(signinResult)) {
-  //       toast.error(signinResult.payload?.error || 'Login failed');
-  //     }
-  //   }
-  // };
 
   const toggleMode = () => {
     setIsSignUp(!isSignUp);
