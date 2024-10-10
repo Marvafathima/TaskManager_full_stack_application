@@ -39,9 +39,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'userauthentication',
     'rest_framework',
+     'rest_framework_simplejwt.token_blacklist',
+      'rest_framework_mongoengine',
+       'corsheaders',
+   
 ]
-
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS=True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+]
 MIDDLEWARE = [
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -49,10 +60,24 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'taskmanager.urls'
 
+
+REST_FRAMEWORK = {
+     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+      ],
+}
+from datetime import timedelta
+SIMPLE_JWT = {
+     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+     'ROTATE_REFRESH_TOKENS': True,
+     'BLACKLIST_AFTER_ROTATION': True
+}
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -96,33 +121,33 @@ WSGI_APPLICATION = 'taskmanager.wsgi.application'
 import mongoengine
 mongoengine.connect(db='taskmanagerdb', host='mongodb://user:botanist62@localhost:27017/taskmanagerdb?authSource=admin', username='user', password='botanist62')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'taskmanagerdb',
-         'ENFORCE_SCHEMA': False,
-        'CLIENT': {
-            'host': 'mongodb://user:botanist62@localhost:27017/taskmanagerdb?authSource=admin',
-            'port': 27017,
-            'username': 'user',
-            'password': 'botanist62',
-            'authSource': 'admin',
-        },
-         'LOGGING': {
-            'version': 1,
-            'loggers': {
-                'djongo': {
-                    'level': 'DEBUG',
-                    'propagate': False,
-                }
-            },
-        },
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'taskmanagerdb',
+         
+#         'CLIENT': {
+#             'host': 'mongodb://user:botanist62@localhost:27017/taskmanagerdb?authSource=admin',
+#             'port': 27017,
+#             'username': 'user',
+#             'password': 'botanist62',
+#             'authSource': 'admin',
+#         },
+#          'LOGGING': {
+#             'version': 1,
+#             'loggers': {
+#                 'djongo': {
+#                     'level': 'DEBUG',
+#                     'propagate': False,
+#                 }
+#             },
+#         },
+#     }
+# }
 # Add these settings
-MONGODB_ENFORCE_SCHEMA = False
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-DJONGO_DATABASE = True
+# MONGODB_ENFORCE_SCHEMA = False
+# DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+# DJONGO_DATABASE = True
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
