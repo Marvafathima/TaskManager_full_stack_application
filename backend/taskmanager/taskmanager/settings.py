@@ -66,18 +66,20 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'taskmanager.urls'
 
 
+from decouple import config
+
+JWT_SECRET_KEY = config('JWT_SECRET_KEY', default='your-secret-key-here')
+
 REST_FRAMEWORK = {
-     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-      ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+       'userauthentication.authentication.JWTAuthentication',
+    ],
 }
 from datetime import timedelta
-SIMPLE_JWT = {
-     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
-     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-     'ROTATE_REFRESH_TOKENS': True,
-     'BLACKLIST_AFTER_ROTATION': True
-}
+
+AUTHENTICATION_BACKENDS = [
+    'userauthentication.CustomMongoEngineBackend',
+]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

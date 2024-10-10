@@ -4,6 +4,18 @@ import axios from 'axios';
 const API_URL = 'http://127.0.0.1:8000/'; // Adjust this to your backend URL
 
 // Async thunk for user signup
+axios.interceptors.request.use(
+    config => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    },
+    error => {
+      return Promise.reject(error);
+    }
+  );
 export const signUp = createAsyncThunk(
   'auth/signUp',
   async (userData, { rejectWithValue }) => {
@@ -21,9 +33,10 @@ export const signIn = createAsyncThunk(
   'auth/signIn',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}user/login/`, userData);
+      const response = await axios.post(`${API_URL}user/signin/`, userData);
       return response.data;
     } catch (error) {
+        console.log(error)
       return rejectWithValue(error.response.data);
     }
   }
@@ -39,10 +52,10 @@ const authSlice = createSlice({
   },
   reducers: {
     logout: (state) => {
-      state.user = null;
-      state.token = null;
-      // You might want to remove the token from localStorage here as well
-    },
+        state.user = null;
+        state.token = null;
+        localStorage.removeItem('token');
+      },
   },
   extraReducers: (builder) => {
     builder
@@ -55,6 +68,14 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+        localStorage.setItem('token', action.payload.token);
+      })
+      // Sign In
+      .addCase(signIn.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        localStorage.setItem('token', action.payload.token);
       })
       .addCase(signUp.rejected, (state, action) => {
         state.loading = false;
@@ -65,14 +86,15 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(signIn.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-      })
+    //   .addCase(signIn.fulfilled, (state, action) => {
+    //     state.loading = false;
+    //     state.user = action.payload.user;
+    //     state.token = action.payload.token;
+    //   })
       .addCase(signIn.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload.error;
+        console.log(action.payload.error)
       });
   },
 });
