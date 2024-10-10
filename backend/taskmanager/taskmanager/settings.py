@@ -75,6 +75,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
        'userauthentication.authentication.JWTAuthentication',
     ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'userauthentication.authentication.IsAuthenticatedCustom',
+    ],
 }
 from datetime import timedelta
 

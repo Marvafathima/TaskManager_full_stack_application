@@ -4,7 +4,7 @@ from django.conf import settings
 from rest_framework import authentication
 from rest_framework.exceptions import AuthenticationFailed
 from .models import User
-
+from rest_framework.permissions import BasePermission
 class JWTAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         auth_header = request.headers.get('Authorization')
@@ -22,3 +22,6 @@ class JWTAuthentication(authentication.BaseAuthentication):
             raise AuthenticationFailed('Invalid token')
         except User.DoesNotExist:
             raise AuthenticationFailed('User not found')
+class IsAuthenticatedCustom(BasePermission):
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.id)
