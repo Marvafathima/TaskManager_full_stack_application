@@ -14,6 +14,7 @@ import {
   Alert 
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const AuthForm = () => {
   const dispatch = useDispatch();
@@ -42,20 +43,45 @@ const AuthForm = () => {
 
     if (isSignUp) {
       if (formData.password !== formData.confirmPassword) {
-        // Handle password mismatch error
+        toast.error("Passwords don't match!");
         return;
       }
       const result= await dispatch(signUp(userData));
       if (signUp.fulfilled.match(result)){
+        toast.success('User created and signed up successfully!');
         navigate('/home')
       }
     } else {
       const signinresult=await dispatch(signIn(userData));
       if (signIn.fulfilled.match(signinresult)){
+        toast.success('Signed up successfully!');
         navigate('/home')
       }
     }
   };
+  // const handleSubmit = async (formData) => {
+  //   if (isSignUp) {
+  //     if (formData.password !== formData.confirmPassword) {
+  //       toast.error("Passwords don't match!");
+  //       return;
+  //     }
+  //     const result = await dispatch(signUp(formData));
+  //     if (signUp.fulfilled.match(result)) {
+  //       toast.success('Signed up successfully!');
+  //       navigate('/home');
+  //     } else if (signUp.rejected.match(result)) {
+  //       toast.error(result.payload?.error || 'Sign up failed');
+  //     }
+  //   } else {
+  //     const signinResult = await dispatch(signIn(formData));
+  //     if (signIn.fulfilled.match(signinResult)) {
+  //       toast.success('Logged in successfully!');
+  //       navigate('/home');
+  //     } else if (signIn.rejected.match(signinResult)) {
+  //       toast.error(signinResult.payload?.error || 'Login failed');
+  //     }
+  //   }
+  // };
 
   const toggleMode = () => {
     setIsSignUp(!isSignUp);
