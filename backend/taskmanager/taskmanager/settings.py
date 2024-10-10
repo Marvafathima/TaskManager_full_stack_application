@@ -84,6 +84,7 @@ from datetime import timedelta
 AUTHENTICATION_BACKENDS = [
     'userauthentication.CustomMongoEngineBackend',
 ]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
