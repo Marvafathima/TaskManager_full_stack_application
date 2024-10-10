@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
+from .authentication import IsAuthenticatedCustom
+from rest_framework.permissions import AllowAny
 from django.contrib.auth.hashers import make_password, check_password
 from .models import User
 # class SignUpView(APIView):
@@ -37,6 +39,8 @@ class SignUpView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 class SignInView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
