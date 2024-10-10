@@ -46,9 +46,10 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     user: null,
-    token: null,
+    token:localStorage.getItem('token'),
     loading: false,
     error: null,
+    isAuthenticated: !!localStorage.getItem('token'),
    
   },
   reducers: {
@@ -56,6 +57,7 @@ const authSlice = createSlice({
         state.user = null;
         state.token = null;
         localStorage.removeItem('token');
+        state.isAuthenticated = false;
       },
   },
   extraReducers: (builder) => {
@@ -70,6 +72,7 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.token = action.payload.token;
         localStorage.setItem('token', action.payload.token);
+        state.isAuthenticated = true;
       })
       // Sign In
       .addCase(signIn.fulfilled, (state, action) => {
@@ -77,6 +80,7 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.token = action.payload.token;
         localStorage.setItem('token', action.payload.token);
+        state.isAuthenticated = true;
       })
       .addCase(signUp.rejected, (state, action) => {
         state.loading = false;
@@ -87,11 +91,7 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-    //   .addCase(signIn.fulfilled, (state, action) => {
-    //     state.loading = false;
-    //     state.user = action.payload.user;
-    //     state.token = action.payload.token;
-    //   })
+   
       .addCase(signIn.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.error;
