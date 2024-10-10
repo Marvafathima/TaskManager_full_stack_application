@@ -121,11 +121,13 @@ class TaskDetailView(APIView):
 
     def put(self, request, pk):
         task = self.get_object(pk, request.user)
+        print("got edit task",task,request.data)
         if not task:
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = TaskSerializer(task, data=request.data, context={'request': request}, partial=True)
         if serializer.is_valid():
             updated_task = serializer.save()
+            print("updated task",TaskSerializer(updated_task).data)
             return Response(TaskSerializer(updated_task).data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

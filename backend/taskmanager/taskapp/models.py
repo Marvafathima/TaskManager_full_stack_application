@@ -27,6 +27,6 @@ class Task(Document):
     title = StringField(required=True)
     description = StringField()
     due_date = DateTimeField()
-    status = StringField(choices=('To Do', 'In Progress', 'Done'), default='To Do')
+    status = StringField(choices=('To Do', 'Expired', 'Done'), default='To Do')
     created_at = DateTimeField(default=datetime.utcnow)
     user = ReferenceField(User)
